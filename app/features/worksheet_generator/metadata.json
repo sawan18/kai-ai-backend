@@ -1,0 +1,24 @@
+{
+    "inputs": [
+        {
+            "label": "Topic",
+            "name": "topic",
+            "type": "text"
+        },
+        {
+            "label": "Grade",
+            "name": "grade_level",
+            "type": "number"
+        },
+        {
+            "label": "Context",
+            "name": "context",
+            "type": "text"
+        },
+        {
+            "label": "Upload PDF files",
+            "name": "files",
+            "type": "file"
+        }
+    ]
+}

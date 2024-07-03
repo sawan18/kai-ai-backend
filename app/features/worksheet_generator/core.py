@@ -1,13 +1,19 @@
+#from services.logger import setup_logger
+
 from app.services.tool_registry import ToolFile
 from app.services.logger import setup_logger
+## These are from quizzify and potentially not needed here 
 from app.features.quizzify.tools import RAGpipeline
 from app.features.quizzify.tools import QuizBuilder
+from app.features.worksheet_generator.tools import WorksheetBuilder 
 from app.api.error_utilities import LoaderError, ToolExecutorError
 
 logger = setup_logger()
 
-def executor(files: list[ToolFile], topic: str, num_questions: int, verbose=False):
-    
+## Inputs to executor function must match metadata.json validation 
+def executor(files: list[ToolFile], grade_level: int, topic: str, context:str):
+
+#def executor(files: list[ToolFile], topic: str, num_questions: int, verbose=False):
     try:
         if verbose: logger.debug(f"Files: {files}")
 
@@ -20,7 +26,8 @@ def executor(files: list[ToolFile], topic: str, num_questions: int, verbose=Fals
         db = pipeline(files)
         
         # Create and return the quiz questions
-        output = QuizBuilder(db, topic, verbose=verbose).create_questions(num_questions)
+        #output = QuizBuilder(db, topic, verbose=verbose).create_questions(num_questions)
+        output = WorksheetBuilder(db, grade_level, topic, context)
     
     except LoaderError as e:
         error_message = e
@@ -33,5 +40,4 @@ def executor(files: list[ToolFile], topic: str, num_questions: int, verbose=Fals
         raise ValueError(error_message)
     
     return output
-
 
